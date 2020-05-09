@@ -119,6 +119,7 @@ public class Spaceship {
    */
   public void update(double dt) {
     if (isMainEngineOn()) {
+    	updateDirection(dt);
     	velocity = velocity.add(this.getAcceleration().multiply(dt));
         position = position.add(velocity.multiply(dt));
     }
