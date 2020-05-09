@@ -204,6 +204,15 @@ public class Spaceship {
 	return fuel/TANK_CAPACITY;
   }
   
+  private static final double PROJECTILE_DISTANCE = 30;
+  private static final double PROJECTILE_VELOCITY = 100;
+  
+  public Projectile fire() {
+	Vector projectilePosition = new Vector(this.position.getX(), this.position.getY() + PROJECTILE_DISTANCE);
+	Vector projectilVelocity = this.velocity.add(this.direction.multiply(PROJECTILE_VELOCITY).normalize());
+	return new Projectile(projectilePosition, projectilVelocity);
+  }
+  
   /**
    * A list of points on the boundary of the spaceship, used
    * to detect collision with other objects.
