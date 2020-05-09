@@ -69,8 +69,15 @@ public class Space {
     score = score + 10 * dt;
   }
 
+  private boolean hasCollision() {
+	  for (Asteroid asteroid : asteroids) {
+		if(spaceship.collides(asteroid)) return true;
+	}
+	return false;
+  }
 
   public boolean isGameOver() {
+	if(hasCollision()) return true;
     return false;
   }
 
