@@ -26,6 +26,14 @@ public class Spaceship {
   private static final double MAIN_ENGINE_POWER = 50;
   private static final double COEFF_OF_ROTATION = 10;
   private static final double REVERSE_ENGINE_POWER = 30;
+  private static final double TANK_CAPACITY = 5;
+  private static final double FUEL_RECHARGED_PER_SECOND = 0.2;
+  private static final double FUEL_CONSUMPTION_MAIN_ENGINE = 1, 
+		  					FUEL_CONSUMPTION_LEFT_ENGINE = 0.3,
+		  					FUEL_CONSUMPTION_RIGHT_ENGINE = 0.3,
+		  					FUEL_CONSUMPTION_REVERSE_ENGINE = 0.5;
+  
+  private double fuel;
 
   /**
    * Controls if the main engine, with forward acceleration, is powered on.
@@ -67,19 +75,11 @@ public class Spaceship {
   }
 
   public boolean isLeftEngineOn() {
-	  if(isMainEngineOn()) {
-		  return isLeftEngineOn;
-	  } else {
-	    return false;
-	  }
+	return isLeftEngineOn;
   }
   
   public boolean isRightEngineOn() {
-	  if(isMainEngineOn()) {
-		  return isRightEngineOn;
-	  } else {
-	    return false;
-	  }
+	return isRightEngineOn;
   }
   
   public boolean isReverseEngineOn() {
@@ -87,10 +87,7 @@ public class Spaceship {
 }
   
   public void startLeftEngine() {
-	if(isMainEngineOn()) {
-		isLeftEngineOn = true;
-		isRightEngineOn = false;
-	}
+	isLeftEngineOn = true;
   }
   
   public void stopLeftEngine() {
@@ -98,10 +95,7 @@ public class Spaceship {
   }
   
   public void startRightEngine() {
-	if(isMainEngineOn()) {
-		isLeftEngineOn = false;
-		isRightEngineOn = true;
-	}
+	isRightEngineOn = true;
   }
   
   public void stopRightEngine() {
@@ -166,6 +160,30 @@ public class Spaceship {
     isMainEngineOn = false;
   }
 
+  private double getCurrentConsumption() {
+	  double totalConsumption = 0;
+	  if(isMainEngineOn()) {
+		  totalConsumption += FUEL_CONSUMPTION_MAIN_ENGINE;
+	  }
+	  if(isLeftEngineOn()) {
+		  totalConsumption += FUEL_CONSUMPTION_LEFT_ENGINE;
+	  }
+	  if(isRightEngineOn()) {
+		  totalConsumption += FUEL_CONSUMPTION_RIGHT_ENGINE;
+	  }
+	  if(isReverseEngineOn()) {
+		  totalConsumption += FUEL_CONSUMPTION_REVERSE_ENGINE;
+	  }
+	  totalConsumption -= FUEL_RECHARGED_PER_SECOND;
+	  return totalConsumption;
+  }
+  
+  private double getAutonomy(double dt) {
+	double timeLeft = fuel/getCurrentConsumption();
+	if(getCurrentConsumption() < 0) return dt;
+	else if (timeLeft > dt) return dt;
+	else return timeLeft;
+  }
 
   /**
    * A list of points on the boundary of the spaceship, used
