@@ -4,6 +4,7 @@ package game;
 import tools.Vector;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -35,6 +36,7 @@ public class Space {
   private Spaceship spaceship;
   private List<Asteroid> asteroids;
   private double score = 0;
+  private List<Projectile> projectiles;
 
   public Spaceship getSpaceship() {
     return spaceship;
@@ -47,6 +49,10 @@ public class Space {
   public double getScore() {
     return score;
   }
+  
+  public List<Projectile> getProjectiles() {
+	return projectiles;
+  }
 
   public Space() {
     spaceship = new Spaceship();
@@ -54,6 +60,7 @@ public class Space {
     for (int i = 0; i < INITIAL_ASTEROID_COUNT; i++) {
       asteroids.add(generateInitialAsteroid());
     }
+    projectiles = new ArrayList<Projectile>();
   }
 
 
@@ -63,6 +70,10 @@ public class Space {
       asteroid.update(dt);
     }
     spaceship.update(dt);
+    for (Projectile projectile : projectiles) {
+      projectile.update(dt);
+	}
+    removeDeadProjectiles();
   }
 
   private void updateScore(double dt) {
@@ -91,6 +102,29 @@ public class Space {
     return asteroid;
   }
 
+  public void addProjectile(Projectile newProjectile) {
+	projectiles.add(newProjectile);
+  }
+  
+  private List<Projectile> getDeadProjectiles() {
+	  List<Projectile> deadProjectiles = new ArrayList<Projectile>();
+	  for (Projectile projectile : deadProjectiles) {
+		if(!projectile.isAlive()) deadProjectiles.add(projectile);
+	  }
+	  return deadProjectiles;
+  }
+  
+  private void removeDeadProjectiles() {
+	  Iterator<Projectile> currentIterator = projectiles.iterator();
+	  while(currentIterator.hasNext()) {
+		  Projectile curentProjectile = currentIterator.next();
+		  Iterator<Projectile> deadIterator = getDeadProjectiles().iterator();
+		  while(deadIterator.hasNext()) {
+			  deadIterator.next().equals(curentProjectile);
+			  currentIterator.remove();
+		  }
+	  }
+  }
 
   /**
    * Because the space is toric (things leaving the window on one side

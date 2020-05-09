@@ -21,7 +21,22 @@ public class Projectile {
 		return position;
 	}
 	
+	public boolean isAlive() {
+		return isAlive;
+	}
+	
 	public void update(double dt) {
 		
+		updatePosition(dt);
+		position = Space.toricRemap(position);
+	}
+	
+	private void updateLifespan(double dt) {
+		lifeDuration -= 1;
+		if(lifeDuration <= 0) isAlive = false;
+	}
+	
+	private void updatePosition(double dt) {
+		position = position.add(velocity).multiply(dt);
 	}
 }

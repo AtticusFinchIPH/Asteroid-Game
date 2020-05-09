@@ -1,6 +1,7 @@
 package views;
 
 import game.Asteroid;
+import game.Projectile;
 import game.Spaceship;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -47,6 +48,7 @@ public class CanvasView {
     render(viewModel.getSpaceship());
     renderScore(viewModel.getScore());
     renderFuel(viewModel.getSpaceshipFuelPercentage());
+    renderProjectiles(viewModel.getProjectiles());
   }
 
 
@@ -102,7 +104,19 @@ public class CanvasView {
     context.setFill(Color.BROWN);
     render(asteroid.getShape());
   }
+  
+  private static final double OVAL_WIDTH = 4, OVAL_HEIGHT = 4;
 
+  public void render(Projectile bullet) {
+	context.setFill(Color.RED);
+	context.fillOval(bullet.getPosition().getX(), bullet.getPosition().getY(), OVAL_WIDTH, OVAL_HEIGHT);
+  }
+  
+  public void renderProjectiles(List<Projectile> projectiles) {
+	for (Projectile projectile : projectiles) {
+		render(projectile);
+	}
+  }
 
   /**
    * @param shape a polygon to display

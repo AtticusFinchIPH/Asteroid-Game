@@ -1,6 +1,7 @@
 package viewModel;
 
 import game.Asteroid;
+import game.Projectile;
 import game.Space;
 import game.Spaceship;
 import views.View;
@@ -118,7 +119,15 @@ public class ViewModel {
   public Spaceship getSpaceship() {
     return gameState.getSpaceship();
   }
-
+  
+  public List<Projectile> getProjectiles() {
+	return gameState.getProjectiles();
+  }
+  
+  public void fireSpaceshipGun() {
+	Projectile newProjectile = gameState.getSpaceship().fire();
+	gameState.addProjectile(newProjectile);
+  }
 
   /**
    * @return the current score
