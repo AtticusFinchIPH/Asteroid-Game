@@ -112,5 +112,8 @@ public class Asteroid {
     angle = angle + angularVelocity * dt;
   }
 
+  public boolean contains(Vector point) {
+	return shape.rotate(angle).translate(velocity).contains(point);
+}
 
 }

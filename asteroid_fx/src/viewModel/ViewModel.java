@@ -96,6 +96,18 @@ public class ViewModel {
   public boolean isSpaceshipReverseEngineOn() {
 		return gameState.getSpaceship().isReverseEngineOn();
   }
+  
+  public boolean isSpaceshipInvulnerable() {
+	return gameState.getSpaceship().getInvunerableTime() > 0 ? true : false;
+  }
+  
+  public double getSpaceshipInvulnerabilityTime() {
+	  return gameState.getSpaceship().getInvunerableTime();
+  }
+  
+  public int getSpaceshipLife() {
+	return gameState.getSpaceship().getLife();
+  }
 
   /**
    * @return whether the game is over

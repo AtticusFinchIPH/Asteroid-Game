@@ -48,6 +48,7 @@ public class CanvasView {
     render(viewModel.getSpaceship());
     renderScore(viewModel.getScore());
     renderFuel(viewModel.getSpaceshipFuelPercentage());
+    renderLives(viewModel.getSpaceship());
     renderProjectiles(viewModel.getProjectiles());
   }
 
@@ -149,6 +150,7 @@ public class CanvasView {
     if(spaceship.isLeftEngineOn()) renderSpaceShipImage(context, getImage(clockwiseBurningImg));
     if(spaceship.isRightEngineOn()) renderSpaceShipImage(context, getImage(counterclockwiseBurningImg));
     if(spaceship.isReverseEngineOn()) renderSpaceShipImage(context, getImage(reverseBurningImg));
+    if(spaceship.getInvunerableTime() > 0) context.setFill(Color.SILVER); // Change spaceship color when it is invulnerable
     context.restore();
   }
 
@@ -171,6 +173,25 @@ public class CanvasView {
   private void renderFuel(double fuelPercentage) {
 	  context.fillRect(0, PIXEL_SCENE_HEIGHT, PIXEL_SCENE_WIDTH, PIXEL_SCENE_HEIGHT * fuelPercentage); // Need to be checked
 	  context.setFill(Color.BLUE);
+  }
+  
+  private void renderLives (Spaceship spaceship) {
+	  context.save();
+	  Vector position = new Vector(PIXEL_SCENE_WIDTH, 0);
+	  for (int i=0; i<spaceship.getLife(); i++) {
+		position = position.subtract(new Vector(PIXEL_SHIP_REDUCED_WIDTH, 0)); // Need to verify this position
+		context.translate(position.getX(), 0);
+		renderLiveImage(context,  getImage(spaceshipImg));
+	  }
+  }
+  
+  private void renderLiveImage (GraphicsContext context, Image img) {
+	  context.drawImage(
+	      img,
+	      - (double) PIXEL_SHIP_REDUCED_WIDTH / 2,
+	      - (double) PIXEL_SHIP_REDUCED_HEIGHT / 2,
+	      PIXEL_SHIP_REDUCED_WIDTH,
+	      PIXEL_SHIP_REDUCED_HEIGHT);
   }
   
   /**
@@ -200,6 +221,10 @@ public class CanvasView {
   // dimensions of the ship image
   private static final int PIXEL_SHIP_WIDTH = 57;
   private static final int PIXEL_SHIP_HEIGHT = 46;
+  
+  private static final int REDUCE_IMAGE_COEFF = 5;
+  private static final int PIXEL_SHIP_REDUCED_WIDTH = PIXEL_SHIP_WIDTH / REDUCE_IMAGE_COEFF;
+  private static final int PIXEL_SHIP_REDUCED_HEIGHT = PIXEL_SHIP_HEIGHT / REDUCE_IMAGE_COEFF;
 
   // dimensions of powerup images
   private static final double PIXEL_POWERUP_WIDTH = 30;
