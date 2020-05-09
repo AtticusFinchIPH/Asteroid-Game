@@ -52,6 +52,21 @@ public class ViewModel {
     gameState.getSpaceship().stopMainEngine();
   }
 
+  public void startSpaceshipLeftEngine() {
+	gameState.getSpaceship().startLeftEngine();
+  }
+  
+  public void stopSpaceshipLeftEngine() {
+	gameState.getSpaceship().stopRightEngine();
+  }
+  
+  public void startSpaceshipRightEngine() {
+	gameState.getSpaceship().startLeftEngine();
+  }
+  
+  public void stopSpaceshipRightEngine() {
+	gameState.getSpaceship().stopRightEngine();
+  }
 
   /**
    * @return whether the game is over

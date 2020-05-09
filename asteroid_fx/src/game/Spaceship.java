@@ -24,6 +24,8 @@ public class Spaceship {
   private Vector direction = new Vector(1, 0);
   
   private static final double MAIN_ENGINE_POWER = 50;
+  private static final double COEFF_OF_ROTATION = 10;
+  private static final double REVERSE_ENGINE_POWER = 30;
 
   /**
    * Controls if the main engine, with forward acceleration, is powered on.
@@ -84,15 +86,23 @@ public class Spaceship {
 	}
   }
   
+  public void stopLeftEngine() {
+	isLeftEngineOn = false;
+  }
+  
   public void startRightEngine() {
-		if(isMainEngineOn()) {
-			isLeftEngineOn = false;
-			isRightEngineOn = true;
-		}
-	  }
+	if(isMainEngineOn()) {
+		isLeftEngineOn = false;
+		isRightEngineOn = true;
+	}
+  }
+  
+  public void stopRightEngine() {
+	isRightEngineOn = false;
+  }
   
   public void updateDirection(double dt) {
-	  double angle = dt * 10; // change by appropriate proportional delay
+	  double angle = dt * COEFF_OF_ROTATION;
 	  if(isRightEngineOn()) direction = direction.rotate(angle);
 	  if(isLeftEngineOn()) direction = direction.rotate(-angle);
   }

@@ -40,9 +40,11 @@ public class View {
         break;
       case LEFT:
         // TODO
-        // break;
+    	viewModel.startSpaceshipRightEngine();
+        break;
       case RIGHT:
         // TODO
+    	viewModel.startSpaceshipLeftEngine();
         break;
       case SPACE:
         //TODO
@@ -67,9 +69,11 @@ public class View {
         break;
       case LEFT:
         // TODO
+    	viewModel.stopSpaceshipRightEngine();
         break;
       case RIGHT:
         // TODO
+    	viewModel.stopSpaceshipLeftEngine();
         break;
     }
 
