@@ -204,6 +204,14 @@ public class Spaceship {
 	return fuel/TANK_CAPACITY;
   }
   
+  public boolean collides(Asteroid asteroid) {
+	for (Vector point : contactPoints) {
+		Vector pointAbsolute = point.rotate(direction.angle()).translate(position);
+		if(asteroid.contains(pointAbsolute)) return true;
+	}
+	return false;
+  }
+  
   /**
    * A list of points on the boundary of the spaceship, used
    * to detect collision with other objects.
