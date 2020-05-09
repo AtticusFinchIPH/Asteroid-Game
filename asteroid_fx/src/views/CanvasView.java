@@ -46,6 +46,7 @@ public class CanvasView {
     render(viewModel.getAsteroids());
     render(viewModel.getSpaceship());
     renderScore(viewModel.getScore());
+    renderFuel(viewModel.getSpaceshipFuelPercentage());
   }
 
 
@@ -149,7 +150,11 @@ public class CanvasView {
       PIXEL_SHIP_HEIGHT);
   }
 
-
+  private void renderFuel(double fuelPercentage) {
+	  context.fillRect(0, PIXEL_SCENE_HEIGHT, PIXEL_SCENE_WIDTH, PIXEL_SCENE_HEIGHT * fuelPercentage);
+	  context.setFill(Color.BLUE);
+  }
+  
   /**
    * Load an image from cache or from file.\
    *
@@ -182,8 +187,7 @@ public class CanvasView {
   private static final double PIXEL_POWERUP_WIDTH = 30;
   private static final double PIXEL_POWERUP_HEIGHT = 30;
 
-
-
-
+  private static final double PIXEL_SCENE_WIDTH = 800;
+  private static final double PIXEL_SCENE_HEIGHT = 800;
 
 }
