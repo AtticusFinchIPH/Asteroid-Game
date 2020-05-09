@@ -75,6 +75,10 @@ public class ViewModel {
   public void stopSpaceshipReverseEngine() {
 	gameState.getSpaceship().stopReverseEngine();
   }
+  
+  public double getSpaceshipFuelPercentage() {
+	return gameState.getSpaceship().getFuelPercentage();
+  }
 
   /**
    * @return whether the game is over

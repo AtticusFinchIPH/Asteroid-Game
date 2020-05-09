@@ -110,10 +110,24 @@ public class Spaceship {
 	isReverseEnginOn = false;
   }
   
-  public void updateDirection(double dt) {
-	  double angle = dt * COEFF_OF_ROTATION;
+  private void updateDirection(double dt) {
+	  double angle = getAutonomy(dt) * COEFF_OF_ROTATION;
 	  if(isRightEngineOn()) direction = direction.rotate(angle);
 	  if(isLeftEngineOn()) direction = direction.rotate(-angle);
+  }
+  
+  private void updateVelocity(double dt) {
+	  velocity = velocity.add(this.getAcceleration().multiply(getAutonomy(dt)));
+  }
+  
+  private void updatePosition(double dt) {
+	  position = position.add(velocity.multiply(dt));
+  }
+  
+  private void updateFuelLevel(double dt) {
+	fuel -= getCurrentConsumption() * dt;
+	if(fuel < 0) fuel = 0;
+	if(fuel > TANK_CAPACITY) fuel = TANK_CAPACITY;
   }
 
   /**
@@ -137,10 +151,11 @@ public class Spaceship {
    * @param dt the time delay to simulate.
    */
   public void update(double dt) {
-    if (isMainEngineOn()) {
+    if (isMainEngineOn()) { // What about other engines???
     	updateDirection(dt);
-    	velocity = velocity.add(this.getAcceleration().multiply(dt));
-        position = position.add(velocity.multiply(dt));
+    	updateVelocity(dt);
+        updatePosition(dt);
+        updateFuelLevel(dt);
     }
     position = Space.toricRemap(position);
   }
@@ -185,6 +200,10 @@ public class Spaceship {
 	else return timeLeft;
   }
 
+  public double getFuelPercentage() {
+	return fuel/TANK_CAPACITY;
+  }
+  
   /**
    * A list of points on the boundary of the spaceship, used
    * to detect collision with other objects.
