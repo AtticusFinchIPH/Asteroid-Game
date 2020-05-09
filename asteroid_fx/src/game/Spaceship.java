@@ -33,6 +33,7 @@ public class Spaceship {
   private boolean isMainEngineOn = false;
   private boolean isLeftEngineOn = false;
   private boolean isRightEngineOn = false;
+  private boolean isReverseEnginOn = false;
 
   /**
    * @return the position of the spaceship
@@ -51,6 +52,8 @@ public class Spaceship {
   public Vector getAcceleration() {
 	  if(isMainEngineOn()) {
 		  return direction.multiply(MAIN_ENGINE_POWER);
+	  } else if (isReverseEngineOn()) {
+		  return direction.multiply(REVERSE_ENGINE_POWER * -1);
 	  } else {
 		  return Vector.ZERO;
 	  }
@@ -79,6 +82,10 @@ public class Spaceship {
 	  }
   }
   
+  public boolean isReverseEngineOn() {
+	return isLeftEngineOn;
+}
+  
   public void startLeftEngine() {
 	if(isMainEngineOn()) {
 		isLeftEngineOn = true;
@@ -99,6 +106,14 @@ public class Spaceship {
   
   public void stopRightEngine() {
 	isRightEngineOn = false;
+  }
+  
+  public void startReverseEngine() {
+	isReverseEnginOn = true;
+  }
+  
+  public void stopReverseEngine() {
+	isReverseEnginOn = false;
   }
   
   public void updateDirection(double dt) {

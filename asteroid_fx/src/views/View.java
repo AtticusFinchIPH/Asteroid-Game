@@ -37,6 +37,7 @@ public class View {
         break;
       case DOWN:
         // TODO
+    	viewModel.startSpaceshipReverseEngine();
         break;
       case LEFT:
         // TODO
@@ -66,6 +67,7 @@ public class View {
         break;
       case DOWN:
         // TODO
+    	viewModel.stopSpaceshipReverseEngine();
         break;
       case LEFT:
         // TODO
