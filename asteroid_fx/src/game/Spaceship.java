@@ -14,18 +14,23 @@ public class Spaceship {
    * The position of the center of the spaceship
    */
   private Vector position;
+  
+  private Vector velocity = Vector.ZERO;
 
   /**
    * The forward direction for the spaceship, encoding the rotation
    * from horizontal of its image and the direction of acceleration.
    */
   private Vector direction = new Vector(1, 0);
+  
+  private static final double MAIN_ENGINE_POWER = 50;
 
   /**
    * Controls if the main engine, with forward acceleration, is powered on.
    */
   private boolean isMainEngineOn = false;
-
+  private boolean isLeftEngineOn = false;
+  private boolean isRightEngineOn = false;
 
   /**
    * @return the position of the spaceship
@@ -41,6 +46,13 @@ public class Spaceship {
     return direction.angle();
   }
 
+  public Vector getAcceleration() {
+	  if(isMainEngineOn()) {
+		  return direction.multiply(MAIN_ENGINE_POWER);
+	  } else {
+		  return Vector.ZERO;
+	  }
+  }
 
   /**
    * @return whether the main engine is on (forward acceleration).
@@ -49,6 +61,41 @@ public class Spaceship {
     return isMainEngineOn;
   }
 
+  public boolean isLeftEngineOn() {
+	  if(isMainEngineOn()) {
+		  return isLeftEngineOn;
+	  } else {
+	    return false;
+	  }
+  }
+  
+  public boolean isRightEngineOn() {
+	  if(isMainEngineOn()) {
+		  return isRightEngineOn;
+	  } else {
+	    return false;
+	  }
+  }
+  
+  public void startLeftEngine() {
+	if(isMainEngineOn()) {
+		isLeftEngineOn = true;
+		isRightEngineOn = false;
+	}
+  }
+  
+  public void startRightEngine() {
+		if(isMainEngineOn()) {
+			isLeftEngineOn = false;
+			isRightEngineOn = true;
+		}
+	  }
+  
+  public void updateDirection(double dt) {
+	  double angle = dt * 10; // change by appropriate proportional delay
+	  if(isRightEngineOn()) direction = direction.rotate(angle);
+	  if(isLeftEngineOn()) direction = direction.rotate(-angle);
+  }
 
   /**
    * Initially the spaceship will be positioned at the center of space.
@@ -72,7 +119,8 @@ public class Spaceship {
    */
   public void update(double dt) {
     if (isMainEngineOn()) {
-      position = position.add(direction.multiply(100 * dt));
+    	velocity = velocity.add(this.getAcceleration().multiply(dt));
+        position = position.add(velocity.multiply(dt));
     }
     position = Space.toricRemap(position);
   }

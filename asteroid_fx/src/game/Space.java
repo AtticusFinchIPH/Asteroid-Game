@@ -16,8 +16,8 @@ public class Space {
   public static final double SPACE_WIDTH = 800;
   public static final double SPACE_HEIGHT = 800;
 
-  public static final int INITIAL_ASTEROID_COUNT = 3;
-  public static final double INITIAL_ASTEROID_SIZE = 2;
+  public static final int INITIAL_ASTEROID_COUNT = 10;
+  public static final double INITIAL_ASTEROID_SIZE = 3;
 
   /**
    * We don't want asteroids to spawn on the spaceship. This parameter
