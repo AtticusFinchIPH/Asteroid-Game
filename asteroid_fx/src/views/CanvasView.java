@@ -131,6 +131,10 @@ public class CanvasView {
     renderSpaceShipImage(context, getImage(spaceshipImg));
     // if you want to add images to display over the ship, add them here
     // by calling again renderSpaceShipImage
+    if(spaceship.isMainEngineOn()) renderSpaceShipImage(context, getImage(engineBurningImg));
+    if(spaceship.isLeftEngineOn()) renderSpaceShipImage(context, getImage(clockwiseBurningImg));
+    if(spaceship.isRightEngineOn()) renderSpaceShipImage(context, getImage(counterclockwiseBurningImg));
+    if(spaceship.isReverseEngineOn()) renderSpaceShipImage(context, getImage(reverseBurningImg));
     context.restore();
   }
 
@@ -151,7 +155,7 @@ public class CanvasView {
   }
 
   private void renderFuel(double fuelPercentage) {
-	  context.fillRect(0, PIXEL_SCENE_HEIGHT, PIXEL_SCENE_WIDTH, PIXEL_SCENE_HEIGHT * fuelPercentage);
+	  context.fillRect(0, PIXEL_SCENE_HEIGHT, PIXEL_SCENE_WIDTH, PIXEL_SCENE_HEIGHT * fuelPercentage); // Need to be checked
 	  context.setFill(Color.BLUE);
   }
   

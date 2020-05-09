@@ -79,6 +79,22 @@ public class ViewModel {
   public double getSpaceshipFuelPercentage() {
 	return gameState.getSpaceship().getFuelPercentage();
   }
+  
+  public boolean isSpaceshipMainEngineOn() {
+	return gameState.getSpaceship().isMainEngineOn();
+  }
+  
+  public boolean isSpaceshipLeftEngineOn() {
+		return gameState.getSpaceship().isLeftEngineOn();
+  }
+  
+  public boolean isSpaceshipRightEngineOn() {
+		return gameState.getSpaceship().isRightEngineOn();
+  }
+  
+  public boolean isSpaceshipReverseEngineOn() {
+		return gameState.getSpaceship().isReverseEngineOn();
+  }
 
   /**
    * @return whether the game is over
