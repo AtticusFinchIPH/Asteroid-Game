@@ -32,8 +32,13 @@ public class Spaceship {
 		  					FUEL_CONSUMPTION_LEFT_ENGINE = 0.3,
 		  					FUEL_CONSUMPTION_RIGHT_ENGINE = 0.3,
 		  					FUEL_CONSUMPTION_REVERSE_ENGINE = 0.5;
+  private static final double INITIAL_INVULNERABLE_TIME = 5;
+  private static final int INITIAL_LIFE = 3;
   
   private double fuel;
+  private double invulnerableTime;
+  private boolean isInvulnerable = true;
+  private int life;
 
   /**
    * Controls if the main engine, with forward acceleration, is powered on.
@@ -65,6 +70,26 @@ public class Spaceship {
 	  } else {
 		  return Vector.ZERO;
 	  }
+  }
+  
+  public double getInvunerableTime() {
+	return invulnerableTime;
+  }
+  
+  public int getLife() {
+	return life;
+  }
+  
+  private void setInitialLife(int initial) {
+	  life = initial;
+  }
+  
+  private void minusLife() {
+	  if(life > 0) life -= 1;
+  }
+  
+  private void addLife() {
+	  life += 1;
   }
 
   /**
@@ -129,6 +154,11 @@ public class Spaceship {
 	if(fuel < 0) fuel = 0;
 	if(fuel > TANK_CAPACITY) fuel = TANK_CAPACITY;
   }
+  
+  private void updateInvulnerability(double dt) {
+	  if(getInvunerableTime() > 0) invulnerableTime -= dt;
+      else isInvulnerable = false;
+  }
 
   /**
    * Initially the spaceship will be positioned at the center of space.
@@ -139,6 +169,8 @@ public class Spaceship {
         Space.SPACE_HEIGHT / 2,
         Space.SPACE_WIDTH / 2
       );
+    setInvulnerable(INITIAL_INVULNERABLE_TIME);
+    setInitialLife(INITIAL_LIFE);
   }
 
 
@@ -156,6 +188,7 @@ public class Spaceship {
     	updateVelocity(dt);
         updatePosition(dt);
         updateFuelLevel(dt);
+        updateInvulnerability(dt);
     }
     position = Space.toricRemap(position);
   }
@@ -202,6 +235,24 @@ public class Spaceship {
 
   public double getFuelPercentage() {
 	return fuel/TANK_CAPACITY;
+  }
+  
+  public boolean collides(Asteroid asteroid) {
+	if(isInvulnerable) return false;
+	for (Vector point : contactPoints) {
+		Vector pointAbsolute = point.rotate(direction.angle()).translate(position);
+		if(asteroid.contains(pointAbsolute)) {
+			minusLife();
+			setInvulnerable(INITIAL_INVULNERABLE_TIME);
+			return true;
+		}
+	}
+	return false;
+  }
+  
+  public void setInvulnerable(double dt) {
+	if(invulnerableTime < dt) invulnerableTime = dt;
+	isInvulnerable = true;
   }
   
   /**
