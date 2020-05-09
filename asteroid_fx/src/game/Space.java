@@ -71,13 +71,15 @@ public class Space {
 
   private boolean hasCollision() {
 	  for (Asteroid asteroid : asteroids) {
-		if(spaceship.collides(asteroid)) return true;
+		if(spaceship.collides(asteroid)) {
+			return true;
+		}
 	}
 	return false;
   }
 
   public boolean isGameOver() {
-	if(hasCollision()) return true;
+	if(hasCollision() && spaceship.getLife() == 0) return true;
     return false;
   }
 
