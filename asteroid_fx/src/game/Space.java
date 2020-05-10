@@ -4,7 +4,9 @@ package game;
 import tools.Vector;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * A Space contains all the information determining the current state of
@@ -19,6 +21,10 @@ public class Space {
   public static final int INITIAL_ASTEROID_COUNT = 10;
   public static final double INITIAL_ASTEROID_SIZE = 3;
 
+  public static final double NO_FRAGMENT_SIZE_LIMITED = 2;
+  public static final int NUMBER_OF_FRAGMENTS = 2;
+  public static final double FRAGMENT_SIZE_RATIO = 0.5;
+  
   /**
    * We don't want asteroids to spawn on the spaceship. This parameter
    * controls how close an asteroid can be from the spaceship initially,
@@ -34,7 +40,8 @@ public class Space {
 
   private Spaceship spaceship;
   private List<Asteroid> asteroids;
-  private double score = 0;
+  private Score score;
+  private Set<Projectile> projectiles;
 
   public Spaceship getSpaceship() {
     return spaceship;
@@ -44,8 +51,12 @@ public class Space {
     return asteroids;
   }
 
-  public double getScore() {
+  public Score getScore() {
     return score;
+  }
+  
+  public Set<Projectile> getProjectiles() {
+	return projectiles;
   }
 
   public Space() {
@@ -54,19 +65,22 @@ public class Space {
     for (int i = 0; i < INITIAL_ASTEROID_COUNT; i++) {
       asteroids.add(generateInitialAsteroid());
     }
+    projectiles = new HashSet<Projectile>();
   }
 
 
   public void update(double dt) {
-    updateScore(dt);
+    updateScore(score);
     for (Asteroid asteroid : asteroids) {
       asteroid.update(dt);
     }
     spaceship.update(dt);
+    processProjectiles(dt);
+    removeDeadProjectiles();
   }
 
-  private void updateScore(double dt) {
-    score = score + 10 * dt;
+  private void updateScore(Score score) {
+	  
   }
 
   private boolean hasCollision() {
@@ -100,6 +114,59 @@ public class Space {
     return asteroid;
   }
 
+  public void addProjectile(Projectile newProjectile) {
+	projectiles.add(newProjectile);
+  }
+  
+  private Set<Projectile> getDeadProjectiles() {
+	  Set<Projectile> deadProjectiles = new HashSet<Projectile>();
+	  for (Projectile projectile : deadProjectiles) {
+		if(!projectile.isAlive()) deadProjectiles.add(projectile);
+	  }
+	  return deadProjectiles;
+  }
+  
+  private void removeDeadProjectiles() {
+	  projectiles.removeAll(getDeadProjectiles());
+  }
+  
+  private void processProjectiles(double dt) {
+	  updateProjectiles(dt);
+	  Set<Projectile> hittingProjectiles = new HashSet<>();
+	  Set<Asteroid> hittedAsteroids = new HashSet<>();
+	  findProjectileHits(hittingProjectiles, hittedAsteroids);
+	  remove(hittingProjectiles);
+	  fragment(hittedAsteroids);
+  }
+  
+  private void updateProjectiles(double dt) {
+	  for (Projectile projectile : projectiles) {
+	      projectile.update(dt);
+	  }
+  }
+  
+  private void findProjectileHits(Set<Projectile> hittingProjectiles, Set<Asteroid> hittedAsteroids) {
+	  for (Projectile projectile : projectiles) {
+		  for (Asteroid asteroid : asteroids) {
+			  if(projectile.hits(asteroid)) {
+				  hittingProjectiles.add(projectile);
+				  hittedAsteroids.add(asteroid);
+			  }
+		  }
+	  }
+  }
+  
+  private void remove(Set<Projectile> hittingProjectiles) {
+	projectiles.removeAll(hittingProjectiles);
+  }
+  
+  private void fragment(Set<Asteroid> hittedAsteroids) {
+	for (Asteroid asteroid : hittedAsteroids) {
+		score.notifyAsteroidHit();
+		asteroids.addAll(asteroid.fragments());
+	}
+	asteroids.removeAll(hittedAsteroids);
+  }
 
   /**
    * Because the space is toric (things leaving the window on one side

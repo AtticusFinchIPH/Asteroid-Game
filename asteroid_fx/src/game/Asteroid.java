@@ -1,5 +1,8 @@
 package game;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import tools.Polygon;
 import tools.Vector;
 
@@ -114,6 +117,19 @@ public class Asteroid {
 
   public boolean contains(Vector point) {
 	return shape.rotate(angle).translate(velocity).contains(point);
-}
+  }
+  
+  public List<Asteroid> fragments() {
+	List<Asteroid> fragments = new ArrayList<Asteroid>();
+	if(this.size > Space.NO_FRAGMENT_SIZE_LIMITED) {
+		for (int i=0; i<Space.NUMBER_OF_FRAGMENTS; i++) {
+			Vector newPosition = this.position;
+			double newSize = this.size * Space.FRAGMENT_SIZE_RATIO;
+			Asteroid newFragment = Space.generator.asteroid(newPosition, newSize);
+			fragments.add(newFragment);
+		}
+	}
+	return fragments;
+  }
 
 }

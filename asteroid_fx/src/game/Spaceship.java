@@ -237,7 +237,16 @@ public class Spaceship {
 	return fuel/TANK_CAPACITY;
   }
   
-  public boolean collides(Asteroid asteroid) {
+  private static final double PROJECTILE_DISTANCE = 30;
+  private static final double PROJECTILE_VELOCITY = 100;
+  
+  public Projectile fire() {
+	Vector projectilePosition = new Vector(this.position.getX(), this.position.getY() + PROJECTILE_DISTANCE);
+	Vector projectilVelocity = this.velocity.add(this.direction.multiply(PROJECTILE_VELOCITY).normalize());
+	return new Projectile(projectilePosition, projectilVelocity);
+  }
+  
+    public boolean collides(Asteroid asteroid) {
 	if(isInvulnerable) return false;
 	for (Vector point : contactPoints) {
 		Vector pointAbsolute = point.rotate(direction.angle()).translate(position);

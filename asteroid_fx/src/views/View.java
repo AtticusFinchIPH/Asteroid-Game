@@ -49,6 +49,7 @@ public class View {
         break;
       case SPACE:
         //TODO
+    	viewModel.fireSpaceshipGun();
         break;
     }
   }

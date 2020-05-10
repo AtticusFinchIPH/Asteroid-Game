@@ -1,11 +1,13 @@
 package viewModel;
 
 import game.Asteroid;
+import game.Projectile;
 import game.Space;
 import game.Spaceship;
 import views.View;
 
 import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -130,12 +132,24 @@ public class ViewModel {
   public Spaceship getSpaceship() {
     return gameState.getSpaceship();
   }
-
+  
+  public Set<Projectile> getProjectiles() {
+	return gameState.getProjectiles();
+  }
+  
+  public void fireSpaceshipGun() {
+	Projectile newProjectile = gameState.getSpaceship().fire();
+	gameState.addProjectile(newProjectile);
+  }
 
   /**
    * @return the current score
    */
   public double getScore() {
-    return gameState.getScore();
+    return gameState.getScore().getScore();
   }
+  
+  public int getScoreMultiplier() {
+	return gameState.getScore().getMultiplier();
+}
 }
