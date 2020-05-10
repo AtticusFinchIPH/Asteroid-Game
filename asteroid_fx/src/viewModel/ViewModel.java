@@ -7,6 +7,7 @@ import game.Spaceship;
 import views.View;
 
 import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -132,7 +133,7 @@ public class ViewModel {
     return gameState.getSpaceship();
   }
   
-  public List<Projectile> getProjectiles() {
+  public Set<Projectile> getProjectiles() {
 	return gameState.getProjectiles();
   }
   
@@ -145,6 +146,10 @@ public class ViewModel {
    * @return the current score
    */
   public double getScore() {
-    return gameState.getScore();
+    return gameState.getScore().getScore();
   }
+  
+  public int getScoreMultiplier() {
+	return gameState.getScore().getMultiplier();
+}
 }

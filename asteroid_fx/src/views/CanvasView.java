@@ -16,6 +16,7 @@ import viewModel.ViewModel;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 
 /**
@@ -47,6 +48,7 @@ public class CanvasView {
     render(viewModel.getAsteroids());
     render(viewModel.getSpaceship());
     renderScore(viewModel.getScore());
+    renderMultiplier(viewModel.getScoreMultiplier());
     renderFuel(viewModel.getSpaceshipFuelPercentage());
     renderLives(viewModel.getSpaceship());
     renderProjectiles(viewModel.getProjectiles());
@@ -81,6 +83,14 @@ public class CanvasView {
     context.fillText(text, 50,50);
   }
 
+  private void renderMultiplier(int multiplier) {
+	context.setFill(Color.GREEN);
+    context.setFont(font);
+    String x = "X";
+    String text = String.format("%d", Math.round(multiplier));
+    context.fillText(x, 50,55);
+    context.fillText(text, 50,60);
+  }
 
   /**
    * Remove the current drawing from the canvas.
@@ -113,7 +123,7 @@ public class CanvasView {
 	context.fillOval(bullet.getPosition().getX(), bullet.getPosition().getY(), OVAL_WIDTH, OVAL_HEIGHT);
   }
   
-  public void renderProjectiles(List<Projectile> projectiles) {
+  public void renderProjectiles(Set<Projectile> projectiles) {
 	for (Projectile projectile : projectiles) {
 		render(projectile);
 	}

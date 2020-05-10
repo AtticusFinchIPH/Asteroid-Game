@@ -5,7 +5,6 @@ import tools.Vector;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -41,7 +40,7 @@ public class Space {
 
   private Spaceship spaceship;
   private List<Asteroid> asteroids;
-  private double score = 0;
+  private Score score;
   private Set<Projectile> projectiles;
 
   public Spaceship getSpaceship() {
@@ -52,7 +51,7 @@ public class Space {
     return asteroids;
   }
 
-  public double getScore() {
+  public Score getScore() {
     return score;
   }
   
@@ -71,7 +70,7 @@ public class Space {
 
 
   public void update(double dt) {
-    updateScore(dt);
+    updateScore(score);
     for (Asteroid asteroid : asteroids) {
       asteroid.update(dt);
     }
@@ -80,8 +79,8 @@ public class Space {
     removeDeadProjectiles();
   }
 
-  private void updateScore(double dt) {
-    score = score + 10 * dt;
+  private void updateScore(Score score) {
+	  
   }
 
   private boolean hasCollision() {
@@ -163,6 +162,7 @@ public class Space {
   
   private void fragment(Set<Asteroid> hittedAsteroids) {
 	for (Asteroid asteroid : hittedAsteroids) {
+		score.notifyAsteroidHit();
 		asteroids.addAll(asteroid.fragments());
 	}
 	asteroids.removeAll(hittedAsteroids);
