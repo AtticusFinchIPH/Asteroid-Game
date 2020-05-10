@@ -25,8 +25,12 @@ public class Projectile {
 		return isAlive;
 	}
 	
+	public boolean hits(Asteroid asteroid) {
+		return asteroid.contains(position);
+	}
+	
 	public void update(double dt) {
-		
+		updateLifespan(dt);
 		updatePosition(dt);
 		position = Space.toricRemap(position);
 	}

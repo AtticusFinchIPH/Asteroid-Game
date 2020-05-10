@@ -4,8 +4,10 @@ package game;
 import tools.Vector;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 /**
  * A Space contains all the information determining the current state of
@@ -36,7 +38,7 @@ public class Space {
   private Spaceship spaceship;
   private List<Asteroid> asteroids;
   private double score = 0;
-  private List<Projectile> projectiles;
+  private Set<Projectile> projectiles;
 
   public Spaceship getSpaceship() {
     return spaceship;
@@ -50,7 +52,7 @@ public class Space {
     return score;
   }
   
-  public List<Projectile> getProjectiles() {
+  public Set<Projectile> getProjectiles() {
 	return projectiles;
   }
 
@@ -60,7 +62,7 @@ public class Space {
     for (int i = 0; i < INITIAL_ASTEROID_COUNT; i++) {
       asteroids.add(generateInitialAsteroid());
     }
-    projectiles = new ArrayList<Projectile>();
+    projectiles = new HashSet<Projectile>();
   }
 
 
@@ -70,9 +72,7 @@ public class Space {
       asteroid.update(dt);
     }
     spaceship.update(dt);
-    for (Projectile projectile : projectiles) {
-      projectile.update(dt);
-	}
+    processProjectiles(dt);
     removeDeadProjectiles();
   }
 
@@ -115,8 +115,8 @@ public class Space {
 	projectiles.add(newProjectile);
   }
   
-  private List<Projectile> getDeadProjectiles() {
-	  List<Projectile> deadProjectiles = new ArrayList<Projectile>();
+  private Set<Projectile> getDeadProjectiles() {
+	  Set<Projectile> deadProjectiles = new HashSet<Projectile>();
 	  for (Projectile projectile : deadProjectiles) {
 		if(!projectile.isAlive()) deadProjectiles.add(projectile);
 	  }
@@ -124,15 +124,41 @@ public class Space {
   }
   
   private void removeDeadProjectiles() {
-	  Iterator<Projectile> currentIterator = projectiles.iterator();
-	  while(currentIterator.hasNext()) {
-		  Projectile curentProjectile = currentIterator.next();
-		  Iterator<Projectile> deadIterator = getDeadProjectiles().iterator();
-		  while(deadIterator.hasNext()) {
-			  deadIterator.next().equals(curentProjectile);
-			  currentIterator.remove();
+	  projectiles.removeAll(getDeadProjectiles());
+  }
+  
+  private void processProjectiles(double dt) {
+	  updateProjectiles(dt);
+	  Set<Projectile> hittingProjectiles = new HashSet<>();
+	  Set<Asteroid> hittedAsteroids = new HashSet<>();
+	  findProjectileHits(hittingProjectiles, hittedAsteroids);
+	  remove(hittingProjectiles);
+	  fragment(hittedAsteroids);
+  }
+  
+  private void updateProjectiles(double dt) {
+	  for (Projectile projectile : projectiles) {
+	      projectile.update(dt);
+	  }
+  }
+  
+  private void findProjectileHits(Set<Projectile> hittingProjectiles, Set<Asteroid> hittedAsteroids) {
+	  for (Projectile projectile : projectiles) {
+		  for (Asteroid asteroid : asteroids) {
+			  if(projectile.hits(asteroid)) {
+				  hittingProjectiles.add(projectile);
+				  hittedAsteroids.add(asteroid);
+			  }
 		  }
 	  }
+  }
+  
+  private void remove(Set<Projectile> hittingProjectiles) {
+	projectiles.removeAll(hittingProjectiles);
+  }
+  
+  private void fragment(Set<Asteroid> hittedAsteroids) {
+	asteroids.removeAll(hittedAsteroids);
   }
 
   /**
