@@ -22,6 +22,10 @@ public class Space {
   public static final int INITIAL_ASTEROID_COUNT = 10;
   public static final double INITIAL_ASTEROID_SIZE = 3;
 
+  public static final double NO_FRAGMENT_SIZE_LIMITED = 2;
+  public static final int NUMBER_OF_FRAGMENTS = 2;
+  public static final double FRAGMENT_SIZE_RATIO = 0.5;
+  
   /**
    * We don't want asteroids to spawn on the spaceship. This parameter
    * controls how close an asteroid can be from the spaceship initially,
@@ -158,6 +162,9 @@ public class Space {
   }
   
   private void fragment(Set<Asteroid> hittedAsteroids) {
+	for (Asteroid asteroid : hittedAsteroids) {
+		asteroids.addAll(asteroid.fragments());
+	}
 	asteroids.removeAll(hittedAsteroids);
   }
 
