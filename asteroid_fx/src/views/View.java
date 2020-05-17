@@ -13,6 +13,8 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 
 import java.util.List;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * The fr.univamu.asteroid.view handles the graphical user interface. It receives and processes
@@ -83,11 +85,7 @@ public class View {
   private ViewModel viewModel; // viewModel, to communicate with the game state.
   private CanvasView canvasView; // canvas, to draw the game board.
   private inspector.View inspectionView; // a tool to visualize game data in live.
-  private List<String> inspectablePackages =
-    List.of(
-      "game",
-      "tools"
-      ); // only objects from these packages are displayed in the data view
+  private List<String> inspectablePackages = new ArrayList<String>(Arrays.asList("game", "tools")); // only objects from these packages are displayed in the data view
          // other objects will appear as "hidden".
 
   @FXML

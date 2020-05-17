@@ -41,8 +41,7 @@ public class Inspections {
   }
 
 
-  private static final List<Class> primitiveClasses =
-    List.of(Double.class, Integer.class, Float.class, Long.class, Boolean.class, Character.class);
+  private static final List<Class> primitiveClasses = new ArrayList<Class>(Arrays.asList(Double.class, Integer.class, Float.class, Long.class, Boolean.class, Character.class));
 
   static boolean isPrimitive(Class<?> subClass) {
     return subClass.isPrimitive()
