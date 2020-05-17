@@ -66,6 +66,7 @@ public class Space {
       asteroids.add(generateInitialAsteroid());
     }
     projectiles = new HashSet<Projectile>();
+    score = new Score();
   }
 
 

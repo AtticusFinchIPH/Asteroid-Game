@@ -2,6 +2,8 @@ package game;
 
 import tools.Vector;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -268,21 +270,20 @@ public class Spaceship {
    * A list of points on the boundary of the spaceship, used
    * to detect collision with other objects.
    */
-  private static final List<Vector> contactPoints =
-    List.of(
-      new Vector(0,0),
-      new Vector(27,0),
-      new Vector(14.5,1.5),
-      new Vector(2,3),
-      new Vector(0,18),
-      new Vector(-13,18),
-      new Vector(-14,2),
-      new Vector(-14,-2),
-      new Vector(-13,-18),
-      new Vector(0,-18),
-      new Vector(2,-3),
-      new Vector(14.5,-1.5)
-    );
+  private static final List<Vector> contactPoints = new ArrayList<Vector>(Arrays.asList(
+																		  new Vector(0,0),
+																	      new Vector(27,0),
+																	      new Vector(14.5,1.5),
+																	      new Vector(2,3),
+																	      new Vector(0,18),
+																	      new Vector(-13,18),
+																	      new Vector(-14,2),
+																	      new Vector(-14,-2),
+																	      new Vector(-13,-18),
+																	      new Vector(0,-18),
+																	      new Vector(2,-3),
+																	      new Vector(14.5,-1.5)
+																		  ));
 
   public static List<Vector> getContactPoints() {
     return contactPoints;

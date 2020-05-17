@@ -12,6 +12,8 @@ import javafx.scene.control.TreeView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -90,12 +92,8 @@ public class View {
   private ViewModel viewModel; // viewModel, to communicate with the game state.
   private CanvasView canvasView; // canvas, to draw the game board.
   private inspector.View inspectionView; // a tool to visualize game data in live.
-  private List<String> inspectablePackages =
-    List.of(
-      "game",
-      "tools"
-      ); // only objects from these packages are displayed in the data view
-         // other objects will appear as "hidden".
+  private List<String> inspectablePackages = new ArrayList<String>(Arrays.asList("game", "tools")); // only objects from these packages are displayed in the data view
+         																							// other objects will appear as "hidden".
 
   @FXML
   private Canvas canvas;
